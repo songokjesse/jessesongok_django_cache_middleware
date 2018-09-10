@@ -49,6 +49,19 @@ A step by step series of examples that tell you how to get a development env run
 - python manage.py createsuperuser
 ```
 
+Configuring Redis on setting.py
+```
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/',  #<== "enter your redis setting
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+ ```  
+
 5. Run Server
 ```
 - python manage.py runserver
@@ -67,3 +80,4 @@ A step by step series of examples that tell you how to get a development env run
 ```
 - loadtest -n 100 -k  http://localhost:8000/api/v1/test/
 ```
+
