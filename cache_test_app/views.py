@@ -9,7 +9,7 @@ from .serializers import  PostSerializer
 from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 
-CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
+CACHE_TTL = getattr(settings, 'CACHE_URL', DEFAULT_TIMEOUT)
 # Create your views here.
 
 class PostList(generics.ListAPIView):
@@ -22,15 +22,15 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 @api_view(['GET'])
-def view_cached_product(request):
+def view_cached_post(request):
     if 'product' in cache:
         # get results from cache
-        products = cache.get('product')
-        return Response(products, status=status.HTTP_201_CREATED)
+        posts = cache.get('post')
+        return Response(posts, status=status.HTTP_201_CREATED)
 
     else:
         posts = Post.objects.all()
-        results = [product.to_json() for product in posts]
+        results = [post.to_json() for post in posts]
         # store data in cache
         cache.set(posts, results, timeout=CACHE_TTL)
         return Response(results, status=status.HTTP_201_CREATED)
